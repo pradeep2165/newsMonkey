@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import NewsItem from "./NewsItem";
 
 export default class News extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     console.log("i am constructor");
     this.state = {
       articles: [],
@@ -12,8 +12,7 @@ export default class News extends Component {
     };
   }
   async componentDidMount() {
-    let url =
-      "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=c017e5b978b74f8b925d60c9d5a3c7c8&pageSize=18";
+    let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=c017e5b978b74f8b925d60c9d5a3c7c8&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parseData = await data.json();
     this.setState({
@@ -24,7 +23,7 @@ export default class News extends Component {
   handelNextClick = async () => {
     let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=c017e5b978b74f8b925d60c9d5a3c7c8&page=${
       this.state.page + 1
-    }&pageSize=18`;
+    }&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parseData = await data.json();
     this.setState({ articles: parseData.articles, page: this.state.page + 1 });
@@ -32,7 +31,7 @@ export default class News extends Component {
   handelPreviousClick = async () => {
     let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=c017e5b978b74f8b925d60c9d5a3c7c8&page=${
       this.state.page - 1
-    }&pageSize=18`;
+    }&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parseData = await data.json();
     this.setState({ articles: parseData.articles, page: this.state.page - 1 });
@@ -40,7 +39,9 @@ export default class News extends Component {
   render() {
     return (
       <div className="container align-items-center my-2">
-        <h3>DailyNews - Top Headlines</h3>
+        <div className="text-center">
+          <h1>DailyNews - Top Headlines</h1>
+        </div>
         <div className="row">
           {this.state.articles.map((element) => {
             return (
