@@ -7,7 +7,7 @@ function App() {
     <div>
       <Navbar />
       <div className="container align-content-center">
-        <News pageSize="20" />
+        <News category="sports" />
       </div>
     </div>
   );
