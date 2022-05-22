@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 export default class News extends Component {
   static defaultProps = {
     country: "in",
-    pageSize: 18,
+    pageSize: 15,
     category: "general",
   };
   static propTypes = {
@@ -21,11 +21,13 @@ export default class News extends Component {
       loading: false,
       page: 1,
     };
+    document.title = "DailyNews - " + this.props.category.charAt(0).toUpperCase() + this.props.category.slice(1);
   }
-  async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=c017e5b978b74f8b925d60c9d5a3c7c8&pageSize=${this.props.pageSize}`;
-    let data = await fetch(url);
+  updateNews = async () => {
+    console.log(this.state.page + "from update");
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=c017e5b978b74f8b925d60c9d5a3c7c8&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true });
+    let data = await fetch(url);
     let parseData = await data.json();
     console.log(parseData);
     this.setState({
@@ -33,38 +35,30 @@ export default class News extends Component {
       totalArticles: parseData.totalResults,
       loading: false,
     });
+  };
+  async componentDidMount() {
+    this.updateNews();
   }
   handelNextClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${
-      this.props.category
-    }&apiKey=c017e5b978b74f8b925d60c9d5a3c7c8&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-    this.setState({ loading: true });
-    let data = await fetch(url);
-    let parseData = await data.json();
-    this.setState({
-      articles: parseData.articles,
+    await this.setState({
       page: this.state.page + 1,
-      loading: false,
     });
+
+    this.updateNews();
   };
   handelPreviousClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${
-      this.props.category
-    }&apiKey=c017e5b978b74f8b925d60c9d5a3c7c8&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-    this.setState({ loading: true });
-    let data = await fetch(url);
-    let parseData = await data.json();
-    this.setState({
-      articles: parseData.articles,
+    await this.setState({
       page: this.state.page - 1,
-      loading: false,
     });
+    this.updateNews();
   };
   render() {
     return (
       <div className="container align-items-center my-2">
-        <div className="text-center">
-          <h1>DailyNews - Top Headlines</h1>
+        <div className="text-center mt-5">
+          <h1 style={{ marginTop: "100px", marginBottom: "50px" }}>
+            {this.props.category.charAt(0).toUpperCase() + this.props.category.slice(1)} - Top Headlines on DailyNews
+          </h1>
           {this.state.loading && <Spinner />}
         </div>
         <div className="row">
@@ -93,7 +87,7 @@ export default class News extends Component {
               type="button"
               className="btn btn-dark"
               onClick={this.handelNextClick}
-              disabled={this.state.page + 1 > Math.ceil(this.state.totalArticles / 18)}
+              disabled={this.state.page + 1 > Math.ceil(this.state.totalArticles / this.props.pageSize)}
             >
               Next &#8594;
             </button>

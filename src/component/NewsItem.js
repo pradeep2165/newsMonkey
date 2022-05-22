@@ -11,7 +11,7 @@ export default class NewsItem extends Component {
             className="card-img-top"
             alt="..."
           />
-          <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style={{ left: "90%", zIndex: "1" }}>
+          <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style={{ left: "90%", zIndex: "1" }}>
             {source}
           </span>
 
