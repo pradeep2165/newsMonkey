@@ -2,7 +2,6 @@ import "./App.css";
 import Navbar from "./component/Navbar";
 import News from "./component/News";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 function App() {
   return (
     <BrowserRouter>

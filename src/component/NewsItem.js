@@ -6,14 +6,14 @@ export default class NewsItem extends Component {
     return (
       <div className="my-3">
         <div className="card">
+          <div className="d-flex justify-content-end position-absolute end-0">
+            <span className="badge rounded bg-danger">{source}</span>
+          </div>
           <img
             src={!imageUrl ? "https://static.cnbetacdn.com/article/2022/0521/83ce8818083bf3a.webp" : imageUrl}
             className="card-img-top"
             alt="..."
           />
-          <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style={{ left: "90%", zIndex: "1" }}>
-            {source}
-          </span>
 
           <div className="card-body">
             <h5 className="card-title">{title}</h5>
